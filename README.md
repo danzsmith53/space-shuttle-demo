@@ -125,6 +125,7 @@ The application can be run in three different configurations depending on chosen
 * There is one special Spring @Profile (local), which was created to enable local development.
 * cloud, Kafka, and mqtt profiles should be inactive when doing local development.
 * random profile should be active instead while local development. It uses a simple random number generator instead of streaming source like Kafka or mqtt.
+
 >Note: Streaming data during local development is random numbers, so this generates a lot of anomalies.
 
 ### Local Configuration
@@ -132,6 +133,7 @@ The application can be run in three different configurations depending on chosen
 ##### InfluxDB
 1. Instructions to install and run InfluxDB are provided here: http://influxdb.com/docs/v0.8/introduction/installation.html
 1. The easiest way is to run InfluxDB is in inside a docker container: docker run -d -p 8083:8083 -p 8086:8086 tutum/influxdb:0.8.8.
+
 >Note: influxdb:0.9 is *not* backwards compatible with 0.8.x.
 
    
