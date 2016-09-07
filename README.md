@@ -7,14 +7,15 @@ This page provides instructions for using the Analytics Toolkit space shuttle de
 ## Overview
 ![](wikiimages/space_shuttle_demo.png)
 
+### Implementation summary
 #### Scoring flow:
-1. The space-shuttle-demo application listens to the Kafka topic and waits for feature vectors.
-1. When a Kafka message appears, the application asks the Scoring Engine to classify the received feature vector.
-1. The application stores the scoring result in an InfluxDB database.
+* The space-shuttle-demo application listens to the Kafka topic and waits for feature vectors.
+* When a Kafka message appears, the application asks the Scoring Engine to classify the received feature vector.
+* The application stores the scoring result in an InfluxDB database.
 
 #### Generating graph flow:
-1. The web application asks the backend application (space-shuttle-demo) for an anomalies chart.
-1. The space-shuttle-demo application fetches anomalies (classes different than 1) several times per minute from InfluxDB and then displays them.
+* The web application asks the backend application (space-shuttle-demo) for an anomalies chart.
+* The space-shuttle-demo application fetches anomalies (classes different than 1) several times per minute from InfluxDB and then displays them.
 
 ## Deploying application to TAP
    
@@ -37,17 +38,17 @@ This page provides instructions for using the Analytics Toolkit space shuttle de
     To create the Scoring Engine service instance:
     * From the TAP console, navigate to **Services > Marketplace**. Select the “TAP Scoring Engine” service.
     * Type the name ‘space-shuttle-scoring-engine’
-    * Click **+ Add an extra parameter** and add the TAP Analytics Toolkit model url: ‘key: uri value: hdfs://path_to_model.
-    * Click **Create new instance**.
+    * Click **+ Add an extra parameter** and add the TAP Analytics Toolkit model url: ‘key: uri value: hdfs://path_to_model'.
+    * Click the **Create new instance** button.
 
 1. Create a Java package:
   ```
   mvn package
   ```
-1. (Optional) Edit the auto-generated ‘manifest.yml’ file. If you created service instances with different names than were recommended, adjust the names of service instances in the services section to match those that you've created. You can also remove the services section and bind them manually later. You may also want to change the application host/name.
+1. (Optional) If you created service instances with different names than were recommended, edit the auto-generated 'manifest.yml' file to adjust the names of service instances in the services section to match those that you've created. You can also remove the services section and bind them manually later. You may also want to change the application host/name.
 1. Push the application to the platform using the Cloud Foundry (CF)  command:  ‘cf push’.
 1. (Optional) If you removed the services section from ‘manifest.yml’, the application will *not* be started yet. First, bind the required service instances (‘cf bind-service’) to the application and then restage (‘cf restage’) it.
-1. The application is now up and running.
+1. The application is now up and running. You should see the space shuttle image appear followed by anomaly data being displayed.
 
 ### Automated deployment
 1. Switch to the ‘deploy’ directory using: ‘cd deploy’
@@ -76,7 +77,8 @@ To send data to Kafka through a gateway you can either (1) push space_shuttle_cl
 1. tox ([installation details](http://tox.readthedocs.io/en/latest/install.html))
 
 ### Gateway URL
-To determine URL of the gateway you are going to send data to:
+To determine the URL of the gateway you are going to send data to:
+
 1. From the TAP console, navigate to **Applications**.
 1. Search for space-shuttle-gateway
 1. Copy the application URL.
@@ -91,7 +93,7 @@ To determine URL of the gateway you are going to send data to:
 To create the model for the Scoring Engine, follow these steps:
 
 #### Upload training data set to HDFS
-1. Login to the TAP console and navigate to  **Data catalog > Submit transfer**. 
+1. Login to the TAP console and navigate to  **Data catalog > Submit Transfer**. 
 1. Select the input type: **Local path**.
 1. Select the sample training data file, which can be found here: src/main/atkmodelgenerator/train-data.csv)
 1. Enter a title in the **Title** field.
@@ -119,9 +121,10 @@ When the upload is completed, click the **Data sets** tab and view the details o
 
 ## Local development
 The application can be run in three different configurations depending on chosen data provider (streaming source).
-1. There is one special Spring @Profile (local), which was created to enable local development.
-1. cloud, Kafka, and mqtt profiles should be inactive when doing local development.
-1. random profile should be active instead while local development. It uses a simple random number generator instead of streaming source like Kafka or mqtt.
+
+* There is one special Spring @Profile (local), which was created to enable local development.
+* cloud, Kafka, and mqtt profiles should be inactive when doing local development.
+* random profile should be active instead while local development. It uses a simple random number generator instead of streaming source like Kafka or mqtt.
 >Note: Streaming data during local development is random numbers, so this generates a lot of anomalies.
 
 ### Local Configuration
